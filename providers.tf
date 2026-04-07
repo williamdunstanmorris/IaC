@@ -4,8 +4,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      Project = "AI-LLM"
-      Team    = "Ml"
+      Project = "Learning"
     }
   }
 }

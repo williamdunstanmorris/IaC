@@ -7,3 +7,6 @@ resource "aws_subnet" "public" {
   }
 }
 
+resource "aws_route_table" "public" {
+  vpc_id = ""
+}
