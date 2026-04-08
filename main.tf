@@ -9,3 +9,6 @@ terraform {
   }
 }
 
+module "network" {
+  source = "./modules/aws-ipam"
+}
