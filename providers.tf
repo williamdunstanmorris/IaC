@@ -8,3 +8,8 @@ provider "aws" {
     }
   }
 }
+
+provider "google" {
+  project = "project-2b40a90c-1a89-477e-894"
+  region  = "europe-west3"
+}

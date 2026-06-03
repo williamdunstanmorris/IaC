@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: gke-managed-cert
+  namespace: argocd
+spec:
+  domains:
+    - argocd.subcloudlabs.com
+    - grafana.subcloudlabs.com
+    - app.subcloudlabs.com

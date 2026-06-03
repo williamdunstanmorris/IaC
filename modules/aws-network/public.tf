@@ -8,7 +8,7 @@ resource "aws_subnet" "public" {
   cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 2, count.index + local.number_private_subnets)
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name = "Private ${data.aws_availability_zones.available.names[count.index]}"
+    Name = "Public ${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
