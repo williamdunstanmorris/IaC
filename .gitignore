@@ -32,3 +32,5 @@ bin/
 
 .terraform/
 terraform.tfstate*
+
+/K8/helm/platform/charts/
