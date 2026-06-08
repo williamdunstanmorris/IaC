@@ -13,118 +13,81 @@ locals {
   zone = "europe-west3-b"
 }
 
-resource "google_compute_router" "router" {
-  name    = "vpc-router"
-  region  = "europe-west3" # Ensure this matches your subnet region!
-  network = google_compute_network.vpc.id
-}
-
-# 2. Configure Cloud NAT for the VPC
-resource "google_compute_router_nat" "nat" {
-  name                               = "vpc-nat"
-  router                             = google_compute_router.router.name
-  region                             = google_compute_router.router.region
-  nat_ip_allocate_option             = "AUTO_ONLY"
-  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
-
-  # subnetwork {
-  #   name = google_compute_subnetwork.public.id
-  #   source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
-  # }
-
-  log_config {
-    enable = true
-    filter = "ERRORS_ONLY"
-  }
-}
-
-resource "google_compute_subnetwork" "public" {
-  name          = "public-gke"
-  network       = google_compute_network.vpc.name
-  region        = local.region
-  ip_cidr_range = cidrsubnet("10.0.0.0/22", 1, 0)
-}
-
-resource "google_compute_subnetwork" "private" {
-  name          = "private-gke"
-  network       = google_compute_network.vpc.name
-  region        = local.region
-  ip_cidr_range = cidrsubnet("10.0.0.0/22", 1, 1)
-}
-
-resource "google_compute_network" "vpc" {
-  name                    = "main"
-  auto_create_subnetworks = false
-}
-
 resource "google_container_cluster" "default" {
   name                     = "app-cluster"
-  deletion_protection      = false
   location                 = local.zone
+  deletion_protection      = false
   initial_node_count       = 1
   remove_default_node_pool = true
-  network                  = google_compute_network.vpc.name
-  subnetwork               = google_compute_subnetwork.private.name
 
-  gateway_api_config {
-    # Instructs GKE to install the CRDs of the Gateway API Standard Channel with the cluster
-    channel = "CHANNEL_STANDARD"
-  }
+  # network                  = google_compute_network.vpc.name
 
-  addons_config {
-    http_load_balancing {
-      disabled = false
-    }
-    horizontal_pod_autoscaling {
-      disabled = false
-    }
-  }
+  # Tyring on a public one for now
+  # subnetwork               = google_compute_subnetwork.public.name
+  # subnetwork               = google_compute_subnetwork.private.name
 
-  master_authorized_networks_config {
-    cidr_blocks {
-      cidr_block   = google_compute_subnetwork.public.ip_cidr_range
-      display_name = "Public Subnet"
-    }
-    cidr_blocks {
-      cidr_block = "94.139.28.73/32"
-      display_name = "Will Mac"
-    }
-  }
+  # gateway_api_config {
+  #   # Instructs GKE to install the CRDs of the Gateway API Standard Channel with the cluster
+  #   channel = "CHANNEL_STANDARD"
+  # }
+  #
+  # addons_config {
+  #   http_load_balancing {
+  #     disabled = false
+  #   }
+  #   horizontal_pod_autoscaling {
+  #     disabled = false
+  #   }
+  # }
+
+  # master_authorized_networks_config {
+    # cidr_blocks {
+    #   cidr_block   = google_compute_subnetwork.public.ip_cidr_range
+    #   display_name = "Public Subnet"
+    # }
+    # cidr_blocks {
+    #   cidr_block = "94.139.28.73/32"
+    #   display_name = "Will Mac"
+    # }
+  # }
 }
 
-resource "google_container_node_pool" "system" {
-  name               = "system"
-  location = local.zone
-  cluster            = google_container_cluster.default.name
-  initial_node_count = 1
+# resource "google_container_node_pool" "system" {
+#   name               = "system"
+#   location = local.zone
+#   cluster            = google_container_cluster.default.name
+#   initial_node_count = 1
+#
+#   management {
+#     auto_repair = true
+#   }
+#
+#   node_config {
+#     service_account = google_service_account.primary.email
+#     machine_type    = "e2-medium"
+#     disk_type       = "pd-standard"
+#     oauth_scopes    = local.oauth_scopes
+#
+#     labels = {
+#       node-role = "system"
+#     }
+#
+#     taint {
+#       key    = "node-role"
+#       value  = "system"
+#       effect = "NO_SCHEDULE"
+#     }
+#   }
+# }
 
-  management {
-    auto_repair = true
-  }
-
-  node_config {
-    service_account = google_service_account.primary.email
-    machine_type    = "e2-medium"
-    disk_type       = "pd-standard"
-    oauth_scopes    = local.oauth_scopes
-
-    labels = {
-      node-role = "system"
-    }
-
-    taint {
-      key    = "node-role"
-      value  = "system"
-      effect = "NO_SCHEDULE"
-    }
-  }
-}
-
+# Create node pool categorised on cpu, memory
+# Create node pool categorised on k8 versions
 resource "google_container_node_pool" "workload" {
   name               = "workload"
   location           = local.zone
   cluster            = google_container_cluster.default.name
-  initial_node_count = 1
+  initial_node_count = 2
+
 
   autoscaling {
     min_node_count = 1
@@ -136,15 +99,37 @@ resource "google_container_node_pool" "workload" {
     auto_upgrade = true
   }
 
+  # upgrade_settings {
+    # strategy = "SURGE"
+    # Higher when you want to ensure faster
+    # upgrade times for old nodes draining
+    # max_surge = 2
+    # blue_green_settings {
+      # standard_rollout_policy {
+      #   batch_node_count = 1
+      #   batch_percentage = 100
+      #   batch_soak_duration = "10"
+      # }
+      # node_pool_soak_duration = ""
+    # }
+  # }
+
   node_config {
     service_account = google_service_account.primary.email
     machine_type    = "e2-medium"
     disk_type       = "pd-standard"
-    spot            = true
+
+    # spot            = true
 
     labels = {
       node-role = "workload"
     }
+
+    # taint {
+    #   key    = "node-role"
+    #   value  = "system"
+    #   effect = "NO_SCHEDULE"
+    # }
 
     oauth_scopes = local.oauth_scopes
   }

@@ -6,8 +6,8 @@ resource "google_compute_firewall" "allow_iap_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
-
-  source_ranges = ["0.0.0.0/0"]
+  # Your IAP firewall rule allows traffic from 0.0.0.0/0. Google Cloud's IAP TCP forwarding service always uses a specific, fixed IP block to connect to your instances. If you don't use this exact CIDR block, IAP connections will drop.
+  source_ranges = ["35.235.240.0/20"]
   target_tags   = ["iap-bastion"]
 }
 
