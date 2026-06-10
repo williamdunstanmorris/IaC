@@ -1,42 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: release-name-bluejay
+  name: bluejay-argocd
   labels:
-    helm.sh/chart: bluejay-0.1.0
-    app.kubernetes.io/name: bluejay
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.0.0"
-    app.kubernetes.io/managed-by: Helm
+    app: bluejay-argocd
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/name: bluejay
-      app.kubernetes.io/instance: release-name
+      app: bluejay-argocd
   template:
     metadata:
       labels:
-        helm.sh/chart: bluejay-0.1.0
-        app.kubernetes.io/name: bluejay
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/version: "1.0.0"
-        app.kubernetes.io/managed-by: Helm
+        app: bluejay-argocd
     spec:
-      serviceAccountName: bluejay
       containers:
         - name: bluejay
-          image: "europe-west1-docker.pkg.dev/YOUR_PROJECT/main/bluejay:1.0.0"
-          imagePullPolicy: IfNotPresent
+          image: europe-west3-docker.pkg.dev/project-2b40a90c-1a89-477e-894/main/bluejay
           ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 500m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-
+            - containerPort: 8080
