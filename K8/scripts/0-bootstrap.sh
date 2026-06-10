@@ -13,6 +13,8 @@ gcloud container clusters get-credentials "$CLUSTER_NAME" \
   --project "$PROJECT_ID"
 
 gcloud components update
+gcloud components install gke-gcloud-auth-plugin
+
 
 gcloud container clusters get-credentials app-cluster \
   --zone "$ZONE"

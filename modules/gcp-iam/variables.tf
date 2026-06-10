@@ -32,9 +32,10 @@ variable "service_accounts" {
 
   validation {
     condition = alltrue([
-      for sa in var.service_accounts :
-      length(sa.organization_roles) > 0 ? var.organization_domain != "" : true
-      ])
+      for sa in var.service_accounts : length(sa.organization_roles) > 0 ? var.organization_domain != "" : true
+      ]
+    )
+
     error_message = "The 'organization_domain' variable must be set if any service account has 'organization_roles' defined."
   }
 

@@ -3,7 +3,6 @@ data "google_service_account" "external" {
     for k, v in var.service_accounts : k => v
     if v.sa_type == "external"
   } : {}
-
   account_id = each.value.account_identifier
   project    = each.value.project
 }
@@ -12,7 +11,6 @@ data "google_organization" "org" {
   count  = var.organization_domain != "" ? 1 : 0
   domain = var.organization_domain
 }
-
 
 resource "google_service_account" "this" {
   for_each     = { for k, v in var.service_accounts : k => v if v.sa_type == "managed" }
