@@ -11,3 +11,13 @@ spec:
     repoURL: 'https://github.com/williamdunstanmorris/IaC'
     targetRevision: HEAD
   project: 'default'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5               # Retry up to 5 times
+      backoff:
+        duration: 5s         # Start with 5 second wait
+        factor: 2            # Double the wait each retry
+        maxDuration: 3m      # Never wait more than 3 minutes
