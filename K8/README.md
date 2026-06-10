@@ -12,7 +12,8 @@ When it comes to describing an incident, I reckon it will be on the lines of thi
 1. What are the first things you would do?
 2. How would you debug XZY?
 3. What are the steps you would take to resolve XYZ ?
-   * GitOps Rollback via ArgoCD
+   * With GitOps, every change to y our infrastructure goes through a commit. ArgoCD acts as an enforcer to this.
+   * 
    
 4. What else do you need to keep in mind?
 5. How might you mitigate this in the future?

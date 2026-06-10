@@ -11,40 +11,40 @@ service:
   port: 8080
   targetPort: 8080
 
-#ingress:
-#  enabled: true
-#  host: bluejay.subcloudlabs.com
-#  annotations:
-#    kubernetes.io/ingress.class: "gce"
-#    kubernetes.io/ingress.global-static-ip-name: "gke-ingress-ip"
-#    networking.gke.io/managed-certificates: "bluejay-managed-cert"
+ingress:
+  enabled: true
+  host: bluejay.subcloudlabs.com
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "gke-ingress-ip"
+    networking.gke.io/managed-certificates: "bluejay-managed-cert"
 
-#resources:
-#  requests:
-#    cpu: 100m
-#    memory: 128Mi
-#  limits:
-#    cpu: 500m
-#    memory: 256Mi
-#
-## Environment variables the app reads at runtime
-#env:
-#  LOG_LEVEL: "info"
-#  ENVIRONMENT: "production"
-#
-## Secret keys — values come from GCP Secret Manager via External Secrets
-#secrets:
-#  stripeApiKey:
-#    secretManagerKey: "bluejay-stripe-api-key"
-#  dbPassword:
-#    secretManagerKey: "bluejay-db-password"
-#
-#serviceAccount:
-#  name: bluejay
-#  gcpServiceAccount: "bluejay@YOUR_PROJECT.iam.gserviceaccount.com"
-#
-#autoscaling:
-#  enabled: false
-#  minReplicas: 2
-#  maxReplicas: 10
-#  targetCPUUtilizationPercentage: 80
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+# Environment variables the app reads at runtime
+env:
+  LOG_LEVEL: "info"
+  ENVIRONMENT: "production"
+
+# Secret keys — values come from GCP Secret Manager via External Secrets
+secrets:
+  stripeApiKey:
+    secretManagerKey: "bluejay-stripe-api-key"
+  dbPassword:
+    secretManagerKey: "bluejay-db-password"
+
+serviceAccount:
+  name: bluejay
+  gcpServiceAccount: "bluejay@YOUR_PROJECT.iam.gserviceaccount.com"
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80

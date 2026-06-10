@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 'bluejay'
+spec:
+  destination:
+    name: 'in-cluster'
+    namespace: 'bluejay'
+  source:
+    path: 'K8/helm/bluejay'
+    repoURL: 'https://github.com/williamdunstanmorris/IaC'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  project: 'default'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5               # Retry up to 5 times
+      backoff:
+        duration: 5s         # Start with 5 second wait
+        factor: 2            # Double the wait each retry
+        maxDuration: 3m      # Never wait more than 3 minutes

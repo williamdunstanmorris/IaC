@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 'app-of-apps'
+  name: 'root-app'
 spec:
   destination:
     name: 'in-cluster'
@@ -9,7 +9,7 @@ spec:
   source:
     path: 'K8/manifests/apps'
     repoURL: 'https://github.com/williamdunstanmorris/IaC'
-    targetRevision: HEAD
+    targetRevision: main
   project: 'default'
   syncPolicy:
     automated:
