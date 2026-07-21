@@ -21,3 +21,8 @@
 .idea/
 *.tmproj
 .vscode/
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+terraform-provider-*

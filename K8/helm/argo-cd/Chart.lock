@@ -1,0 +1,9 @@
+dependencies:
+- name: argo-cd
+  repository: https://argoproj.github.io/argo-helm
+  version: 9.5.15
+- name: grafana
+  repository: https://grafana-community.github.io/helm-charts
+  version: 12.7.2
+digest: sha256:b093ff1d303c65677882eecc2b60c4e4cf9e08acafb3810ecdaf1a255186f845
+generated: "2026-07-20T18:19:25.310307+02:00"

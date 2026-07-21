@@ -9,12 +9,28 @@ For interview preparation it is important to look at how you would go about solv
 
 When it comes to describing an incident, I reckon it will be on the lines of this:
 
-1. What are the first things you would do?
-2. How would you debug XZY?
-3. What are the steps you would take to resolve XYZ ?
+**Gather Insights**
+* Communicate with the team, assess the severity. Triage the issue. Don't guess blindly.
+* Start a call with other engineers on call (if necessary). Most of the time it a faulty deployment / configuration
+* Diagnose the system issue. 
+  * Replicate for example if there is a 5XX error being thrown
+* Inspect Observability. What do they show? (Console Metrics / Alarms, Prometheus, Grafana, Kibana)
+* Inspect Deployment chain. Has there been a recent deployment? (ArgoCD, Helm, Git Updates)
+* Before jumping in, isolate the stack.
+* Verify the diagnosis with certain tools
+  * Validate
+  * Get nodes with `kubectl get nodes --all-namespaces` 
+  * Get pods with `kubectl get pods --all-namespaces`
+  * Get services with `kubectl get svc -n bluejay`
+
+**Mitigation**
+* Is the fix easy? Can we just deploy a new version of the docker image with the code fix?
+* If it is a configuration issue, can we route traffic away quickly onto the newer version with a canary / rolling / blue-green deployment?
+* 
+
+What are the steps you would take to resolve XYZ ?
    * With GitOps, every change to y our infrastructure goes through a commit. ArgoCD acts as an enforcer to this.
-   * 
-   
+   *
 4. What else do you need to keep in mind?
 5. How might you mitigate this in the future?
 
@@ -41,7 +57,15 @@ Imagine in a production incident you have a `CrashLoopBackOff`. After investigat
 1. Pod Stuck in `Pending`
    * This could be when the Scheduler, a part of the `ControlPlane`
    * Causes: Cannot find a node that satisfies the constraints; Insufficient CPU/Memory for the pod; missing persistent volumes
-2. 
+2. You have deployed some new configuration in Kubernetes, but now you want to rollback. What is the process for this, and how would it follow a GitOps procedure?
+   * You inspect the `kubectl get (nodes/pods/deployment/svc)` & ArgoCD and attempt to diagnose the problem. 
+   * If you had prometheus and/or grafana, you can visualise often how the deployment is going, and whether there are restarts.
+   * You would go to the 
+   * Get the 
+   * If ArgoCD is enabled, you would lok at the most recent commit.
+   * 
+3. You deployed a new environment variables, but Kubernetes isn't fetching it from Google Secrets, how do you proceed
+4. How would you roll-back a Canary deployment?
 
 ## Common Cases With Troubleshooting GKE Configuration
 

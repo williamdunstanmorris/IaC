@@ -1,0 +1,5 @@
+plugins:
+  # here we are installing two plugins, make sure to keep the indentation correct as written here.
+
+  - alexanderzobnin-zabbix-app
+  - grafana-clock-panel
