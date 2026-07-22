@@ -11,16 +11,3 @@ provider "helm" {
     cluster_ca_certificate = base64decode(google_container_cluster.default.master_auth[0].cluster_ca_certificate)
   }
 }
-#
-# resource "helm_release" "argocd" {
-#   name             = "argo"
-#   repository       = "https://argoproj.github.io/argo-helm"
-#   chart            = "argo-cd"
-#   namespace        = "argocd"
-#   create_namespace = true
-#
-#   values = [
-#     file("${path.root}/K8/helm/argocd/argocd-values.yaml")
-#   ]
-# }
-

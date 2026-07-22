@@ -20,26 +20,24 @@ resource "google_container_cluster" "default" {
   initial_node_count       = 1
   remove_default_node_pool = true
 
-  # network                  = google_compute_network.vpc.name
+  network                  = google_compute_network.vpc.name
+  subnetwork               = google_compute_subnetwork.private.name
 
-  # Tyring on a public one for now
-  # subnetwork               = google_compute_subnetwork.public.name
-  # subnetwork               = google_compute_subnetwork.private.name
+  gateway_api_config {
+    # Instructs GKE to install the CRDs of the Gateway API Standard Channel with the cluster
+    channel = "CHANNEL_STANDARD"
+  }
 
-  # gateway_api_config {
-  #   # Instructs GKE to install the CRDs of the Gateway API Standard Channel with the cluster
-  #   channel = "CHANNEL_STANDARD"
-  # }
-  #
-  # addons_config {
-  #   http_load_balancing {
-  #     disabled = false
-  #   }
-  #   horizontal_pod_autoscaling {
-  #     disabled = false
-  #   }
-  # }
+  addons_config {
+    http_load_balancing {
+      disabled = false
+    }
+    horizontal_pod_autoscaling {
+      disabled = false
+    }
+  }
 
+  # If you want this cluster kubectl, helm to be accessible only from IPs, add this.
   # master_authorized_networks_config {
     # cidr_blocks {
     #   cidr_block   = google_compute_subnetwork.public.ip_cidr_range
