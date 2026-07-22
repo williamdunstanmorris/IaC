@@ -1,0 +1,32 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  name: store
+spec:
+  # Attach the HTTPRoute to a Gateway.
+  parentRefs:
+    - kind: Gateway
+      name: internal-http
+  # Route requests that have `store.example.com` in the Host header.
+  hostnames:
+    - "store.example.com"
+  rules:
+    # Send requests with the `env: canary` header to the `store-v2` Service.
+    - matches:
+        - headers:
+            - name: env
+              value: canary
+      backendRefs:
+        - name: store-v2
+          port: 8080
+    # Send requests with `/de` in the path to the `store-german` Service.
+    - matches:
+        - path:
+            value: /de
+      backendRefs:
+        - name: store-german
+          port: 8080
+    # Send unmatched requests to the store-v1 Service.
+    - backendRefs:
+        - name: store-v1
+          port: 8080
