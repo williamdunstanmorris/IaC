@@ -1,0 +1,24 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  name: external-regional-https
+spec:
+  # Name of an existing GatewayClass.
+  gatewayClassName: gke-l7-regional-external-managed
+  # Listen for HTTPS traffic on port 443
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        # Terminate the TLS session with the client at the Gateway.
+        mode: Terminate
+        # Certificates for the Gateway to use to create a new TLS session.
+        options:
+          networking.gke.io/cert-manager-certs: bluejay-subcloudlabs-com
+  # The name of the static IP address of the external load balancer.
+  # You can also use the `IPAddress` type to specify the actual IP address.
+  addresses:
+    - type: NamedAddress
+      # The name of the created resource in module.gke.google_compute_address.external_load_balancer
+      value: gke-external-load-balancer
