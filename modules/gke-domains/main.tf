@@ -25,22 +25,7 @@ resource "google_dns_record_set" "argocd" {
   rrdatas      = [google_compute_global_address.ingress.address]
 }
 
-# resource "google_dns_record_set" "grafana" {
-#   name         = "grafana.subcloudlabs.com."
-#   type         = "A"
-#   ttl          = 300
-#   managed_zone = google_dns_managed_zone.default.name
-#   rrdatas      = [google_compute_global_address.ingress.address]
-# }
-#
-# resource "google_dns_record_set" "app" {
-#   name         = "app.subcloudlabs.com."
-#   type         = "A"
-#   ttl          = 300
-#   managed_zone = google_dns_managed_zone.default.name
-#   rrdatas      = [google_compute_global_address.ingress.address]
-# }
-
 output "nameservers" {
   value = google_dns_managed_zone.default.name_servers
 }
+

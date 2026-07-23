@@ -15,7 +15,7 @@ spec:
         mode: Terminate
         # Certificates for the Gateway to use to create a new TLS session.
         certificateRefs:
-          - name: store-example-com
+          - name: bluejay-subcloudlabs-com
   # The name of the static IP address of the external load balancer.
   # You can also use the `IPAddress` type to specify the actual IP address.
   addresses:
