@@ -10,7 +10,7 @@ locals {
     "https://www.googleapis.com/auth/cloud-platform"
   ]
   region = "europe-west3"
-  zone = "europe-west3-b"
+  zone   = "europe-west3-b"
 }
 
 resource "google_container_cluster" "default" {
@@ -20,8 +20,8 @@ resource "google_container_cluster" "default" {
   initial_node_count       = 1
   remove_default_node_pool = true
 
-  network                  = google_compute_network.vpc.name
-  subnetwork               = google_compute_subnetwork.private.name
+  network    = google_compute_network.vpc.name
+  subnetwork = google_compute_subnetwork.private.name
 
   gateway_api_config {
     # Instructs GKE to install the CRDs of the Gateway API Standard Channel with the cluster
@@ -37,16 +37,21 @@ resource "google_container_cluster" "default" {
     }
   }
 
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "pods"
+    services_secondary_range_name = "services"
+  }
+
   # If you want this cluster kubectl, helm to be accessible only from IPs, add this.
   # master_authorized_networks_config {
-    # cidr_blocks {
-    #   cidr_block   = google_compute_subnetwork.public.ip_cidr_range
-    #   display_name = "Public Subnet"
-    # }
-    # cidr_blocks {
-    #   cidr_block = "94.139.28.73/32"
-    #   display_name = "Will Mac"
-    # }
+  # cidr_blocks {
+  #   cidr_block   = google_compute_subnetwork.public.ip_cidr_range
+  #   display_name = "Public Subnet"
+  # }
+  # cidr_blocks {
+  #   cidr_block = "94.139.28.73/32"
+  #   display_name = "Will Mac"
+  # }
   # }
 }
 
@@ -98,18 +103,18 @@ resource "google_container_node_pool" "workload" {
   }
 
   # upgrade_settings {
-    # strategy = "SURGE"
-    # Higher when you want to ensure faster
-    # upgrade times for old nodes draining
-    # max_surge = 2
-    # blue_green_settings {
-      # standard_rollout_policy {
-      #   batch_node_count = 1
-      #   batch_percentage = 100
-      #   batch_soak_duration = "10"
-      # }
-      # node_pool_soak_duration = ""
-    # }
+  # strategy = "SURGE"
+  # Higher when you want to ensure faster
+  # upgrade times for old nodes draining
+  # max_surge = 2
+  # blue_green_settings {
+  # standard_rollout_policy {
+  #   batch_node_count = 1
+  #   batch_percentage = 100
+  #   batch_soak_duration = "10"
+  # }
+  # node_pool_soak_duration = ""
+  # }
   # }
 
   node_config {

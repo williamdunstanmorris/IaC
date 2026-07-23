@@ -1,26 +1,7 @@
-# resource "google_api_gateway_api" "api_gw" {
-#   provider = google-beta
-#   api_id = "my-api"
-# }
-#
-# resource "google_api_gateway_api_config" "api_gw" {
-#   provider = google-beta
-#   api = google_api_gateway_api.api_gw.api_id
-#   api_config_id = "my-config"
-#
-#   openapi_documents {
-#     document {
-#       path = "spec.yaml"
-#       contents = filebase64("test-fixtures/openapi.yaml")
-#     }
-#   }
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
-#
-# resource "google_api_gateway_gateway" "api_gw" {
-#   provider = google-beta
-#   api_config = google_api_gateway_api_config.api_gw.id
-#   gateway_id = "my-gateway"
-# }
+# Create a regional static IP address for the external load balancer.
+
+resource "google_compute_address" "external_load_balancer" {
+  name         = "gke-external-load-balancer"
+  region       = local.region
+  network_tier = "STANDARD"
+}

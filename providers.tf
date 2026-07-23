@@ -14,7 +14,7 @@ terraform {
       version = "7.2.0"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "3.2.0"
     }
   }
@@ -37,8 +37,8 @@ provider "google" {
 }
 
 provider "argocd" {
-  server_addr = "34.185.207.56:80"
+  server_addr = "34.141.18.128:80"
   username    = "admin"
-  password    = "198Kn7jD668F6nbN"
+  password    = "LgqaviRjmbvGMaxg"
   insecure    = true
 }
