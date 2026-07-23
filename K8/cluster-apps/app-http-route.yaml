@@ -8,7 +8,7 @@ spec:
     - kind: Gateway
       name: external-regional-http
   hostnames:
-    - "store.example.com"
+    - "bluejay.subcloudlab.com"
   rules:
     # Default rule for store.example.com that sends traffic to the store-v1 service.
     - backendRefs:
