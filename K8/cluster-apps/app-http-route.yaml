@@ -12,5 +12,5 @@ spec:
   rules:
     # Default rule for store.example.com that sends traffic to the store-v1 service.
     - backendRefs:
-        - name: store-v1
+        - name: ext-store-v1
           port: 8080
