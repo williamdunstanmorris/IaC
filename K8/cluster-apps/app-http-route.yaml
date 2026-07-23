@@ -6,7 +6,7 @@ spec:
   parentRefs:
     # Bind the route to the 'external-http' Gateway.
     - kind: Gateway
-      name: external-http
+      name: external-regional-http
   hostnames:
     - "store.example.com"
   rules:
