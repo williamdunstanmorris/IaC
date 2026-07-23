@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: store-v1
+  name: ext-store-v1
 spec:
   replicas: 2
   selector:
@@ -26,7 +26,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: store-v1
+  name: ext-store-v1
 spec:
   selector:
     app: store
