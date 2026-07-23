@@ -14,18 +14,3 @@ spec:
     - backendRefs:
         - name: store-v1
           port: 8080
-    # Match requests with the "env: canary" header and send them to the store-v2 service.
-    - matches:
-        - headers:
-            - name: env
-              value: canary
-      backendRefs:
-        - name: store-v2
-          port: 8080
-    # Match requests with the path "/de" and sends them to the store-german service.
-    - matches:
-        - path:
-            value: /de
-      backendRefs:
-        - name: store-german
-          port: 8080
